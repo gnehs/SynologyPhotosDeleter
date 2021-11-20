@@ -1,0 +1,27 @@
+{
+  "name": "synologyphotosdeleter",
+  "version": "0.1.0",
+  "description": "Delete screenshots uploaded from your iPhone by analyzing the photo Exif",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gnehs/SynologyPhotosDeleter.git"
+  },
+  "author": "gnehs",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gnehs/SynologyPhotosDeleter/issues"
+  },
+  "homepage": "https://github.com/gnehs/SynologyPhotosDeleter#readme",
+  "dependencies": {
+    "koa": "^2.13.4",
+    "koa-bodyparser": "^4.3.0",
+    "koa-json": "^2.0.2",
+    "koa-mount": "^4.0.0",
+    "koa-router": "^10.1.1",
+    "koa-static": "^5.0.0"
+  }
+}
