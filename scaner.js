@@ -32,7 +32,7 @@ async function getFiles() {
     }));
     // filter exif
     function withExifModel(exif) {
-        return exif.Model;
+        return exif?.Model;
     }
     files = files
         .filter(({ exif }) => !withExifModel(exif))
