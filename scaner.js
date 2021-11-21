@@ -42,6 +42,7 @@ async function getFiles() {
             return aDate - bDate;
         })
         .map(({ file }) => file)
+    console.log(`[log][/api/list]${files.length} photos`)
     return files;
 }
 async function delFiles(files) {
