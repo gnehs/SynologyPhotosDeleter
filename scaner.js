@@ -35,7 +35,7 @@ async function getFiles() {
         return exif?.Model;
     }
     files = files
-        .filter(({ exif }) => !withExifModel(exif))
+        .filter(({ exif }) => !exif || !withExifModel(exif))
         .map(({ file }) => file)
     console.log(`[log][/api/list]${files.length} photos`)
     return files;
