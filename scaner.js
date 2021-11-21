@@ -6,6 +6,10 @@ async function walk(dir) {
     files = await Promise.all(files.map(async file => {
         const filePath = path.join(dir, file);
         const stats = await fs.stat(filePath);
+        // ignore files in @eaDir folder
+        if (filePath.includes('@eaDir')) {
+            return [];
+        }
         if (stats.isDirectory()) return walk(filePath);
         else if (stats.isFile()) return filePath;
     }));
