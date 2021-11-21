@@ -24,6 +24,8 @@ router.get('/', async (ctx, next) => {
 app.use(router.routes());
 
 app.listen(3001)
-console.log('listening on port 3001')
-console.log('http://localhost:3001')
-console.log('Press Ctrl+C to quit.')
+console.log('# Synology Photos Deleter')
+console.log('# listening on port 3001')
+if (process.env.NODE_ENV !== 'production') {
+    console.log('# http://localhost:3001')
+}
