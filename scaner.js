@@ -36,11 +36,6 @@ async function getFiles() {
     }
     files = files
         .filter(({ exif }) => !withExifModel(exif))
-        .sort((a, b) => {
-            let aDate = new Date(a.exif.DateTimeOriginal);
-            let bDate = new Date(b.exif.DateTimeOriginal);
-            return aDate - bDate;
-        })
         .map(({ file }) => file)
     console.log(`[log][/api/list]${files.length} photos`)
     return files;
