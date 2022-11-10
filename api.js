@@ -1,7 +1,7 @@
 const Router = require('koa-router');
 const router = new Router()
 const version = require('./package.json').version;
-const { getFiles, delFiles } = require('./scaner.js');
+const { getFiles, delFiles } = require('./scanner.js');
 router.get('/info', async (ctx, next) => {
     ctx.body = { version }
 })
