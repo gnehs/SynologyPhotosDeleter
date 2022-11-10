@@ -1,4 +1,5 @@
 const path = require('path')
+const fs = require('fs')
 const Koa = require('koa');
 const serve = require('koa-static')
 const mount = require('koa-mount')
@@ -22,6 +23,11 @@ router.get('/', async (ctx, next) => {
 })
 
 app.use(router.routes());
+
+app.use(async (ctx, next) => {
+    ctx.type = 'html'
+    ctx.body = fs.createReadStream(path.join(__dirname, '/public/index.html'))
+})
 
 app.listen(3001)
 console.log('# Synology Photos Deleter')

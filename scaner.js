@@ -1,6 +1,7 @@
 const fs = require('fs').promises;
 const path = require('path');
 const exifr = require('exifr')
+
 async function walk(dir) {
     let files = await fs.readdir(dir);
     files = await Promise.all(files.map(async file => {
@@ -26,9 +27,9 @@ async function getFiles() {
         return extList.includes(ext);
     }
     files = files.filter(file => isImage(file));
-    // get exif  
+    // get exif
     files = await Promise.all(files.map(async file => {
-        let exif = await exifr.parse(file);
+        let exif = await exifr.parse(file, true);
         return {
             file,
             exif
@@ -38,10 +39,18 @@ async function getFiles() {
     function withExifModel(exif) {
         return exif?.Model;
     }
+    function isScreenshotConfidence(exif) {
+        // read exif user comment
+        if (new TextDecoder().decode(exif?.userComment).includes('Screenshot')) {
+            return true;
+        }
+        return false
+    }
     files = files
         .filter(({ exif }) => !withExifModel(exif))
-        .map(({ file }) => file)
-    console.log(`[log][/api/list]${files.length} photos`)
+        .map(({ file, exif }) => ({ file, selected: isScreenshotConfidence(exif) }))
+    console.log(`[log][/api/list] ${files.length} photos`)
+    console.log(`                 ${files.filter(({ selected }) => selected).length} screenshots detected`)
     return files;
 }
 async function delFiles(files) {
