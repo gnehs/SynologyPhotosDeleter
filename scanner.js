@@ -1,7 +1,6 @@
 const fs = require('fs').promises;
 const path = require('path');
 const exifr = require('exifr')
-
 async function walk(dir) {
     let files = await fs.readdir(dir);
     files = await Promise.all(files.map(async file => {
@@ -19,6 +18,16 @@ async function walk(dir) {
 }
 
 async function getFiles() {
+
+    // added filter out path to cache
+    let cache
+    try {
+        cache = JSON.parse(await fs.readFile('./cache.json', 'utf8'));
+    } catch (e) {
+        cache = []
+    }
+
+
     let time = Date.now();
     console.log(`┌[log][/api/list]`);
     let files = await walk('./photos');
@@ -34,6 +43,8 @@ async function getFiles() {
         return extList.includes(ext);
     }
     files = files.filter(file => isImage(file));
+    // filter out cache
+    files = files.filter(file => !cache.includes(file))
     // get exif
     files = await Promise.all(files.map(async file => {
         let exif = await exifr.parse(file, { userComment: true, gps: false, pick: ['userComment', 'ImageHeight', 'ImageWidth', 'Model'], })
@@ -69,9 +80,16 @@ async function getFiles() {
         }
         return false
     }
+    let cachefiles = files
+        .filter(({ exif }) => withExifModel(exif))
+        .map(({ file }) => file)
+    cache = cache.concat(cachefiles)
+    fs.writeFile('./cache.json', JSON.stringify(cache), 'utf8');
+
     files = files
         .filter(({ exif }) => !withExifModel(exif))
         .map(({ file, exif }) => ({ file, selected: isScreenshotConfidence(exif) }))
+
     console.log(`├ ${files.length} photos`)
     console.log(`└ ${files.filter(({ selected }) => selected).length} screenshots detected`)
     return files;

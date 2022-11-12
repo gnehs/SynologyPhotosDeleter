@@ -105,3 +105,4 @@ dist
 photos
 .DS_Store
 status.json
+cache.json
