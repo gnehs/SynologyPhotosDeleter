@@ -84,7 +84,7 @@ async function getFiles() {
         .filter(({ exif }) => withExifModel(exif))
         .map(({ file }) => file)
     cache = cache.concat(cachefiles)
-    fs.writeFile(path.join(__dirname, '/cache.json'), JSON.stringify(cache), 'utf8');
+    await fs.writeFile(path.join(__dirname, '/cache.json'), JSON.stringify(cache), 'utf8');
 
     files = files
         .filter(({ exif }) => !withExifModel(exif))
