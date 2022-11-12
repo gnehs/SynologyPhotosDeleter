@@ -36,7 +36,7 @@ async function getFiles() {
     files = files.filter(file => isImage(file));
     // get exif
     files = await Promise.all(files.map(async file => {
-        let exif = await exifr.parse(file, true);
+        let exif = await exifr.parse(file, { userComment: true, gps: false, pick: ['userComment', 'ImageHeight', 'ImageWidth', 'Model'], })
         return {
             file,
             exif
