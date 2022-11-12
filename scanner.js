@@ -19,7 +19,13 @@ async function walk(dir) {
 }
 
 async function getFiles() {
+    let time = Date.now();
+    console.log(`┌[log][/api/list]`);
     let files = await walk('./photos');
+
+    console.log(`├ walk: ${Date.now() - time}ms`);
+    time = Date.now();
+
     // filter images
     function isImage(file) {
         let ext = path.extname(file).toLowerCase();
@@ -35,6 +41,10 @@ async function getFiles() {
             exif
         }
     }));
+
+    console.log(`├ exif: ${Date.now() - time}ms`);
+    time = Date.now();
+
     // filter exif
     function withExifModel(exif) {
         return exif?.Model;
@@ -44,13 +54,21 @@ async function getFiles() {
         if (new TextDecoder().decode(exif?.userComment).includes('Screenshot')) {
             return true;
         }
+        // iPhone 13 Pro / width: 1170 & height: 2532
+        if (exif?.ImageWidth === 1170 && exif?.ImageHeight === 2532) {
+            return true;
+        }
+        // iPhone 13 Pro Max / width: 1242 & height: 2688
+        if (exif?.ImageWidth === 1242 && exif?.ImageHeight === 2688) {
+            return true;
+        }
         return false
     }
     files = files
         .filter(({ exif }) => !withExifModel(exif))
         .map(({ file, exif }) => ({ file, selected: isScreenshotConfidence(exif) }))
-    console.log(`[log][/api/list] ${files.length} photos`)
-    console.log(`                 ${files.filter(({ selected }) => selected).length} screenshots detected`)
+    console.log(`├ ${files.length} photos`)
+    console.log(`└ ${files.filter(({ selected }) => selected).length} screenshots detected`)
     return files;
 }
 async function delFiles(files) {
