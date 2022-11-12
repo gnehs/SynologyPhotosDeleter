@@ -23,6 +23,7 @@ async function getFiles() {
     console.log(`┌[log][/api/list]`);
     let files = await walk('./photos');
 
+    console.log(`├ ${files.length} files found`);
     console.log(`├ walk: ${Date.now() - time}ms`);
     time = Date.now();
 
@@ -42,7 +43,7 @@ async function getFiles() {
         }
     }));
 
-    console.log(`├ exif: ${Date.now() - time}ms`);
+    console.log(`├ exif: ${Date.now() - time}ms (${((Date.now() - time) / files.length).toFixed(2)}ms/file)`);
     time = Date.now();
 
     // filter exif
