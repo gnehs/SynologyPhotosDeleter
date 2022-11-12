@@ -1,6 +1,6 @@
 {
   "name": "synologyphotosdeleter",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Delete screenshots uploaded from your iPhone by analyzing the photo Exif",
   "main": "index.js",
   "scripts": {
