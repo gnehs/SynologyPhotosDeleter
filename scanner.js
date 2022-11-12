@@ -23,8 +23,8 @@ async function getFiles() {
     console.log(`┌[log][/api/list]`);
     let files = await walk('./photos');
 
-    console.log(`├ ${files.length} files found`);
     console.log(`├ walk: ${Date.now() - time}ms`);
+    console.log(`├ ${files.length} files found`);
     time = Date.now();
 
     // filter images
@@ -48,6 +48,10 @@ async function getFiles() {
 
     // filter exif
     function withExifModel(exif) {
+        // iPhone 13 Pro Camera / width: 2880 & height: 3840
+        if (exif?.ImageWidth === 2880 && exif?.ImageHeight === 3840) {
+            return true
+        }
         return exif?.Model;
     }
     function isScreenshotConfidence(exif) {
