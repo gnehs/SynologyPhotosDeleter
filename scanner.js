@@ -22,7 +22,7 @@ async function getFiles() {
     // added filter out path to cache
     let cache
     try {
-        cache = JSON.parse(await fs.readFile('./cache.json', 'utf8'));
+        cache = JSON.parse(await fs.readFile(path.join(__dirname, '/cache.json'), 'utf8'));
     } catch (e) {
         cache = []
     }
@@ -84,7 +84,7 @@ async function getFiles() {
         .filter(({ exif }) => withExifModel(exif))
         .map(({ file }) => file)
     cache = cache.concat(cachefiles)
-    fs.writeFile('./cache.json', JSON.stringify(cache), 'utf8');
+    fs.writeFile(path.join(__dirname, '/cache.json'), JSON.stringify(cache), 'utf8');
 
     files = files
         .filter(({ exif }) => !withExifModel(exif))
